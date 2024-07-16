@@ -9,15 +9,17 @@ type AuthState = {
     user: null | User;
     isLoading: boolean;
 };
-
+export let temptoken = '';
 const AuthProvider = ({children}: {children?: React.ReactNode}) => {
     const [authState, setAuthState] = useState<AuthState>({isAuthenticated: false, isLoading: true, user: null});
 
     const setIsAuthenticated = (user: User | null, accessToken: string | null) => {
         if (!user && !accessToken) {
+            temptoken = '';
             setAuthState({isAuthenticated: false, isLoading: false, user: null});
         }
         if (user && accessToken) {
+            temptoken = accessToken;
             sessionStorage.setItem('access_token', accessToken);
             setAuthState({user, isAuthenticated: true, isLoading: false});
         }
@@ -29,6 +31,7 @@ const AuthProvider = ({children}: {children?: React.ReactNode}) => {
         if (user.data?.accessToken && !user.isLoading) {
             setIsAuthenticated(user.data.user as unknown as User, user.data.accessToken);
         } else if (user.isError) {
+            temptoken = '';
             setAuthState({user: null, isAuthenticated: false, isLoading: false});
         }
     }, [user.isError, user.data, user.isLoading]);
