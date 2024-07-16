@@ -1,3 +1,6 @@
+/**
+ * This is environment types file to give intellisence for environment variable in the whole app
+ */
 declare global {
     namespace NodeJS {
         interface ProcessEnv {

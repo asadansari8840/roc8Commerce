@@ -1,53 +1,56 @@
-import Link from "next/link";
+'use client';
 
-import { LatestPost } from "@/app/_components/post";
-import { api, HydrateClient } from "@/trpc/server";
+import {useState} from 'react';
+import {api} from '@/trpc/react';
+import CONST from './_constants/app-constants';
+import {useSession} from './_context/AuthProvider';
+import {useIsPrivate} from './_hooks/useRoutes';
+import Pagination from '@/app/_components/Pagination';
+import CategoryList from '@/app/_components/CategoryList';
+import AsyncComponent from './_components/AsyncComponent';
 
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
+export default function Home() {
+    const {isLoading} = useSession();
+    const [currentPage, setCurrentPage] = useState(1);
+    const {data, refetch, isFetching} = api.category.getCategories.useQuery({page: currentPage});
+    useIsPrivate();
 
-  void api.post.getLatest.prefetch();
+    if (isLoading) {
+        return <div>Loading....</div>;
+    }
 
-  return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
-            </p>
-          </div>
+    const totalPages = data?.totalPages ?? 1;
 
-          <LatestPost />
-        </div>
-      </main>
-    </HydrateClient>
-  );
-}
+    const handlePageChange = (page: number) => {
+        if (page > 0 && page <= totalPages) {
+            setCurrentPage(page);
+            refetch();
+        }
+    };
+
+    console.log('Catgorues datat >>>>', data?.categories);
+
+    return (
+        <>
+            <section className="h-[757px] flex items-center justify-center">
+                <div className="w-[576px] h-[658px] border border-primary-border rounded-[20px] px-[60px]">
+                    <h2 className="text-3xl text-center font-semibold mt-[40px]">{CONST.HOME.TITLE}</h2>
+                    <p className="text-center mt-[23px]">{CONST.HOME.PARA}</p>
+                    <p className="mt-[33px] text-[20px] font-medium">{CONST.HOME.CAT_TITLE}</p>
+                    <AsyncComponent isLoading={isFetching}>
+                        <CategoryList
+                            refetch={refetch}
+                            categories={data?.categories ?? []}
+                        />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </AsyncComponent>
+                </div>
+            </section>
+            <div className="min-h-[1000px]"></div>
+        </>
+    );
+};
