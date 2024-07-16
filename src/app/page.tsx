@@ -21,14 +21,12 @@ export default function Home() {
 
     const totalPages = data?.totalPages ?? 1;
 
-    const handlePageChange = (page: number) => {
+    const handlePageChange = async (page: number) => {
         if (page > 0 && page <= totalPages) {
             setCurrentPage(page);
-            refetch();
+            await refetch();
         }
     };
-
-    console.log('Catgorues datat >>>>', data?.categories);
 
     return (
         <>
@@ -53,4 +51,4 @@ export default function Home() {
             <div className="min-h-[1000px]"></div>
         </>
     );
-};
+}

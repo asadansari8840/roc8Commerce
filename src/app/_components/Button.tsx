@@ -1,4 +1,5 @@
-import React, {LegacyRef, forwardRef} from 'react';
+import React, {forwardRef} from 'react';
+import {type LegacyRef} from 'react';
 
 type Button = {
     isLoading?: boolean;
@@ -15,6 +16,8 @@ const Button = forwardRef<Button, Button>(({children, className, isLoading, ...p
         </button>
     );
 });
+
+Button.displayName = 'Button';
 
 export default Button;
 

@@ -8,6 +8,7 @@ import CONST from '@/app/_constants/app-constants';
 import Button from '../Button';
 import {useRouter} from 'next/navigation';
 import {useSession} from '@/app/_context/AuthProvider';
+import type {User} from '@/app/_context/AuthContext';
 
 const SignupForm = () => {
     const router = useRouter();
@@ -25,7 +26,7 @@ const SignupForm = () => {
 
     const createUser = api.user.signup.useMutation({
         onSuccess: async (data) => {
-            setIsAuthenticated(data.user, data.accessToken);
+            setIsAuthenticated(data.user as unknown as User, data.accessToken);
             await utils.user.invalidate();
             reset(defaultValue);
             toast.success('User created successfully');
@@ -38,8 +39,8 @@ const SignupForm = () => {
 
     return (
         <form
-            onSubmit={handleSubmit((e) => {
-                createUser.mutateAsync(e);
+            onSubmit={handleSubmit(async (e) => {
+                await createUser.mutateAsync(e);
             })}
             className="space-y-[32px]"
         >
@@ -55,7 +56,7 @@ const SignupForm = () => {
             <Button
                 isLoading={createUser.isPending}
                 type="submit"
-                className='w-full'
+                className="w-full"
             >
                 Create Account
             </Button>

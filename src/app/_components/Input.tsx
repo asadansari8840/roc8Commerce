@@ -1,11 +1,14 @@
 'use client';
-import React, {LegacyRef, forwardRef, useState} from 'react';
-import {Control, Controller, FieldValues, Form, RegisterOptions} from 'react-hook-form';
+import React, {forwardRef, useState} from 'react';
+import {Controller} from 'react-hook-form';
+import type {LegacyRef} from 'react';
+import type {RegisterOptions, FieldValues} from 'react-hook-form';
 
 type InputProps = {
     label?: string;
     rules?: Omit<RegisterOptions<FieldValues, string>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
-    control?: Control<any>; // React Hook Form control object
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control?: any; // React Hook Form control object
     name: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 const Input = forwardRef<InputProps, InputProps>(({type, rules, control, name, label, ...props}, ref) => {
@@ -13,10 +16,11 @@ const Input = forwardRef<InputProps, InputProps>(({type, rules, control, name, l
 
     return (
         <Controller
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             control={control}
             name={name}
             rules={rules}
-            render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+            render={({field: {value, onChange, onBlur}}) => (
                 <div>
                     {label && <p className="my-2 capitalize">{label}</p>}
                     <div className="relative">
@@ -25,7 +29,7 @@ const Input = forwardRef<InputProps, InputProps>(({type, rules, control, name, l
                             placeholder="Enter "
                             ref={ref as LegacyRef<HTMLInputElement> | undefined}
                             {...props}
-                            value={value}
+                            value={value as string}
                             onChange={onChange}
                             onBlur={onBlur}
                             type={type == 'password' && isPasswordVisible ? 'text' : type}

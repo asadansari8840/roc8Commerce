@@ -1,14 +1,21 @@
 'use client';
 import {useContext, useEffect, useState} from 'react';
-import {AuthContext, initialAuthState} from './AuthContext';
+import {AuthContext} from './AuthContext';
 import {api} from '@/trpc/react';
+import type {User} from './AuthContext';
+
+type AuthState = {
+    isAuthenticated: boolean;
+    user: null | User;
+    isLoading: boolean;
+};
 
 const AuthProvider = ({children}: {children?: React.ReactNode}) => {
-    const [authState, setAuthState] = useState(initialAuthState);
+    const [authState, setAuthState] = useState<AuthState>({isAuthenticated: false, isLoading: true, user: null});
 
-    const setIsAuthenticated = (user: any, accessToken: string | null) => {
+    const setIsAuthenticated = (user: User | null, accessToken: string | null) => {
         if (!user && !accessToken) {
-            setAuthState({...initialAuthState, isLoading: false});
+            setAuthState({isAuthenticated: false, isLoading: false, user: null});
         }
         if (user && accessToken) {
             sessionStorage.setItem('access_token', accessToken);
@@ -20,9 +27,9 @@ const AuthProvider = ({children}: {children?: React.ReactNode}) => {
 
     useEffect(() => {
         if (user.data?.accessToken && !user.isLoading) {
-            setIsAuthenticated(user.data.user, user.data.accessToken);
+            setIsAuthenticated(user.data.user as unknown as User, user.data.accessToken);
         } else if (user.isError) {
-            setAuthState({...initialAuthState, isLoading: false});
+            setAuthState({user: null, isAuthenticated: false, isLoading: false});
         }
     }, [user.isError, user.data, user.isLoading]);
 

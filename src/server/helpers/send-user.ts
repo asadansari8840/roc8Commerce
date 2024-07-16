@@ -2,7 +2,7 @@ import {ResponseCookie} from 'next/dist/compiled/@edge-runtime/cookies';
 import {generateAccessToken, generateRefreshToken} from './auth-helper';
 import {cookies} from 'next/headers';
 
-type user = {
+export type user = {
     id: number;
     name: string;
     email: string;

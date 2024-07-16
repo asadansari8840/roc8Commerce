@@ -29,7 +29,9 @@ export const userRouter = createTRPCRouter({
                 },
             });
             return sendUser(user);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (error.code == 'P2002') {
                 throw new TRPCError({
                     code: 'CONFLICT',
@@ -39,9 +41,9 @@ export const userRouter = createTRPCRouter({
             throw error;
         }
     }),
-    refresh: publicProcedure.query(async ({ctx, input}) => {
-        let refreshToken = cookies().get('refresh_token');
-        const tokenValue = verifyRefreshToken(refreshToken?.value);
+    refresh: publicProcedure.query(async ({ctx}) => {
+        const refreshToken = cookies().get('refresh_token');
+        const tokenValue = verifyRefreshToken(refreshToken?.value ?? '');
         if (!refreshToken?.value || !tokenValue) {
             throw new TRPCError({code: 'UNAUTHORIZED'});
         }
@@ -58,7 +60,7 @@ export const userRouter = createTRPCRouter({
 
         return sendUser(user);
     }),
-    logout: publicProcedure.mutation(async ({ctx, input}) => {
+    logout: publicProcedure.mutation(async () => {
         cookies().delete('refresh_token');
         return {
             message: 'Logged out successfully',

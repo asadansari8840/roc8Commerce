@@ -18,7 +18,8 @@ const LoginPage = () => {
                 <LoginForm />
                 <hr className="mt-10" />
                 <div className="text-center my-12">
-                    <span>Don't have an Account ? </span>
+                    {/* eslint-disable-next-line  react/no-unescaped-entities*/}
+                    <span>Don't have an Account ?</span>
                     <Link
                         className="font-medium text-dark-gray-text"
                         href="/signup"

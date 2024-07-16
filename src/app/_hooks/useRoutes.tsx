@@ -1,4 +1,5 @@
-import React, {useEffect, useLayoutEffect} from 'react';
+"use client";
+import {useEffect} from 'react';
 import {useSession} from '../_context/AuthProvider';
 import {useRouter} from 'next/navigation';
 

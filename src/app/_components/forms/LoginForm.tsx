@@ -1,5 +1,5 @@
 'use client';
-import React, {useState} from 'react';
+import React from 'react';
 import {api} from '@/trpc/react';
 import {useForm} from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -8,9 +8,9 @@ import CONST from '@/app/_constants/app-constants';
 import Button from '../Button';
 import Input from '../Input';
 import {useSession} from '@/app/_context/AuthProvider';
+import type {User} from '@/app/_context/AuthContext';
 
 const LoginForm = () => {
-    const utils = api.useUtils();
     const router = useRouter();
     const {setIsAuthenticated} = useSession();
 
@@ -21,12 +21,10 @@ const LoginForm = () => {
         },
     });
 
-    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {};
-
     const loginUser = api.user.login.useMutation({
         onSuccess: (data) => {
-            setIsAuthenticated(data.user, data.accessToken);
-            toast.success("Logged in successfully");
+            setIsAuthenticated(data.user as unknown as User, data.accessToken);
+            toast.success('Logged in successfully');
             router.push('/');
         },
         onError: (error) => {
@@ -43,7 +41,6 @@ const LoginForm = () => {
                 <Input
                     label={input}
                     key={input}
-                    onChange={onChangeHandler}
                     name={input}
                     control={control}
                     type={input}
@@ -52,7 +49,7 @@ const LoginForm = () => {
             <Button
                 isLoading={loginUser.isPending}
                 type="submit"
-                className='w-full'
+                className="w-full"
             >
                 Login
             </Button>

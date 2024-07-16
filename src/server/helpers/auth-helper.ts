@@ -1,6 +1,12 @@
 import brcypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import {UserResponseType} from '../types';
+import type {UserResponseType} from '../types';
+
+type tokenType = {
+    email: string;
+    id: number;
+    name: string;
+};
 
 export const hashPassword = (userEnteredPassword: string) => {
     return brcypt.hash(userEnteredPassword, 10);
@@ -10,14 +16,14 @@ export const verifyPassword = (userEnteredPassword: string, hashedPassword: stri
     return brcypt.compare(userEnteredPassword, hashedPassword);
 };
 
-export const generateAccessToken = (user: any) => {
+export const generateAccessToken = (user: tokenType) => {
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_JWT_SECRET, {
         expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRE || '15m',
     });
     return accessToken;
 };
 
-export const generateRefreshToken = (user: any) => {
+export const generateRefreshToken = (user: tokenType) => {
     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_JWT_SECRET, {
         expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRE || '7d',
     });
@@ -32,7 +38,7 @@ export const verifyAccessToken = (token: string) => {
     }
 };
 
-export const verifyRefreshToken = (token: string = '') => {
+export const verifyRefreshToken = (token: string) => {
     try {
         const userInfo = jwt.verify(token, process.env.REFRESH_TOKEN_JWT_SECRET) as UserResponseType;
         return userInfo;

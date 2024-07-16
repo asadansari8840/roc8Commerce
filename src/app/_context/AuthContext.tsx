@@ -7,9 +7,10 @@ export const initialAuthState = {
     isLoading: true,
 };
 
-const setIsAuthenticated = (user: any, accessToken: string | null) => {};
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const setIsAuthenticated = () => {};
 
-type User = {
+export type User = {
     email: string;
     id: string;
     name: string;
@@ -20,8 +21,8 @@ type User = {
 type AuthContext = {
     isAuthenticated: boolean;
     isLoading: boolean;
-    user?: User;
-    setIsAuthenticated: (user: any, accessToken: string | null) => void;
+    user?: User | null | undefined;
+    setIsAuthenticated: (user: User | null, accessToken: string | null) => void;
 };
 
 export const AuthContext = createContext<AuthContext>({...initialAuthState, setIsAuthenticated});

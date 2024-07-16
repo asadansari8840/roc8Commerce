@@ -36,6 +36,7 @@ const NavContents = () => {
             <section className="space-x-3 font-semibold col-span-4 flex items-center justify-center">
                 {CONST.NAV.LINKS.map((link) => (
                     <Link
+                        key={link}
                         href="#"
                         className="hover:opacity-70 transition-all"
                     >

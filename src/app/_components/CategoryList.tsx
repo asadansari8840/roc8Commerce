@@ -42,19 +42,24 @@ const CategoryItem = ({id, isSavedByUser, name, refetch}: {id: number; isSavedBy
         setIsSelected(isSavedByUser);
     }, [isSavedByUser]);
 
-    const onEditHandler = (id: number) => {
-        mutation.mutateAsync({categoryId: id}).then((res) => {
-            toast.success(res.message);
-        });
+    const onEditHandler = async (id: number) => {
+        await mutation
+            .mutateAsync({categoryId: id})
+            .then((res) => {
+                toast.success(res.message);
+            })
+            .catch(() => {
+                toast.error('Something went wrong');
+            });
         refetch();
     };
 
     return (
         <div
             key={id}
-            onClick={() => {
+            onClick={async () => {
                 setIsSelected((prev) => !prev);
-                onEditHandler(id);
+                await onEditHandler(id);
             }}
             className="flex gap-4 cursor-pointer hover:bg-black/10 transition-all items-center"
         >
