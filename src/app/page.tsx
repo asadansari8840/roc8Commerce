@@ -29,26 +29,23 @@ export default function Home() {
     };
 
     return (
-        <>
-            <section className="h-[757px] flex items-center justify-center">
-                <div className="w-[576px] h-[658px] border border-primary-border rounded-[20px] px-[60px]">
-                    <h2 className="text-3xl text-center font-semibold mt-[40px]">{CONST.HOME.TITLE}</h2>
-                    <p className="text-center mt-[23px]">{CONST.HOME.PARA}</p>
-                    <p className="mt-[33px] text-[20px] font-medium">{CONST.HOME.CAT_TITLE}</p>
-                    <AsyncComponent isLoading={isFetching}>
-                        <CategoryList
-                            refetch={refetch}
-                            categories={data?.categories ?? []}
-                        />
-                        <Pagination
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={handlePageChange}
-                        />
-                    </AsyncComponent>
-                </div>
-            </section>
-            <div className="min-h-[1000px]"></div>
-        </>
+        <section className="h-[757px] flex items-center justify-center">
+            <div className="w-[576px] h-[658px] border border-primary-border rounded-[20px] px-[60px]">
+                <h2 className="text-3xl text-center font-semibold mt-[40px]">{CONST.HOME.TITLE}</h2>
+                <p className="text-center mt-[23px]">{CONST.HOME.PARA}</p>
+                <p className="mt-[33px] text-[20px] font-medium">{CONST.HOME.CAT_TITLE}</p>
+                <AsyncComponent isLoading={isFetching}>
+                    <CategoryList
+                        refetch={refetch}
+                        categories={data?.categories ?? []}
+                    />
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
+                </AsyncComponent>
+            </div>
+        </section>
     );
 }
