@@ -29,13 +29,13 @@ export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export function TRPCReactProvider(props: {children: React.ReactNode}) {
     const queryClient = getQueryClient();
-    const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
+    let token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : (temptoken ?? null);
 
     const [trpcClient] = useState(() =>
         api.createClient({
             links: [
                 loggerLink({
-                    enabled: () => true,
+                    enabled: () => (process.env.NODE_ENV == 'development' ? true : false),
                 }),
                 httpBatchLink({
                     transformer: SuperJSON,
@@ -43,7 +43,10 @@ export function TRPCReactProvider(props: {children: React.ReactNode}) {
                     headers: () => {
                         const headers = new Headers();
                         if (token) {
-                            headers.set('Authorization', `Bearer ${temptoken ?? token}`);
+                            headers.set('Authorization', `Bearer ${token}`);
+                        } else if (!token) {
+                            const token = getAccessToken();
+                            headers.set('Authorization', `Bearer ${token}`);
                         }
                         return headers;
                     },
@@ -75,4 +78,11 @@ function getBaseUrl() {
     if (typeof window !== 'undefined') return window.location.origin;
     if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
     return `http://localhost:${process.env.PORT ?? 3000}`;
+}
+
+function getAccessToken() {
+    if (typeof window !== 'undefined') {
+        const token = sessionStorage.getItem('access_token');
+        return token;
+    }
 }

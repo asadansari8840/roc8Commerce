@@ -29,6 +29,7 @@ const AuthProvider = ({children}: {children?: React.ReactNode}) => {
 
     useEffect(() => {
         if (user.data?.accessToken && !user.isLoading) {
+            temptoken = user.data.accessToken;
             setIsAuthenticated(user.data.user as unknown as User, user.data.accessToken);
         } else if (user.isError) {
             temptoken = '';
