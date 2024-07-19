@@ -14,6 +14,13 @@ const CONST = {
         TITLE: 'Create your account',
         INPUTS: ['name', 'email', 'password'],
     },
+    VERIFY: {
+        TITLE: 'Verify your email',
+        PARA: {
+            getParaWithEmail: (emailId?: string) => `Enter the 8 digit code you have received on ${emailId?.toLocaleLowerCase() ?? 'on your email'}`,
+        },
+        INPUTS: ['name', 'email', 'password'],
+    },
     HOME: {
         TITLE: 'Please mark your interests!',
         PARA: 'We will keep you notified.',

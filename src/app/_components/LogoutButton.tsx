@@ -9,11 +9,14 @@ const LogoutButton = () => {
     const router = useRouter();
     const mutation = api.user.logout.useMutation();
     const {setIsAuthenticated} = useSession();
+    
     const logoutHandler = async () => {
         await mutation.mutateAsync();
         setIsAuthenticated(null, null);
+        sessionStorage.removeItem('access_token');
         router.push('/login');
     };
+
     return (
         <Button
             onClick={logoutHandler}

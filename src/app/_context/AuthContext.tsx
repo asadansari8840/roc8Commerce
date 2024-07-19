@@ -14,8 +14,8 @@ export type User = {
     email: string;
     id: string;
     name: string;
+    isVerified?: boolean;
     password: string;
-    refreshToken: string;
 };
 
 type AuthContext = {

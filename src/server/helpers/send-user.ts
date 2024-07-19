@@ -7,9 +7,9 @@ export type user = {
     name: string;
     email: string;
     password: string;
-    refreshToken: string | null;
+    isVerified: boolean;
 };
-export const sendUser = (user: user) => {
+export const sendUser = (user: user, message?: string) => {
     const {email, id, name} = user;
     const accessToken = generateAccessToken({email, id, name});
     const refreshToken = generateRefreshToken({email, id, name});
@@ -24,5 +24,6 @@ export const sendUser = (user: user) => {
         user: user,
         accessToken: accessToken,
         isAuthenticated: true,
+        message: message ?? null,
     };
 };

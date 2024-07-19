@@ -16,6 +16,9 @@ interface CategoryListProps {
 const CategoryList: React.FC<CategoryListProps> = ({categories, refetch}) => {
     return (
         <div className="h-[350px] flex flex-col justify-evenly">
+            {categories.length == 0 && (
+                <p className='text-center text-red-500'>No categories found !</p>
+            )}
             {categories.map((category) => {
                 const {id, isSavedByUser, name} = category;
                 return (
@@ -58,8 +61,8 @@ const CategoryItem = ({id, isSavedByUser, name, refetch}: {id: number; isSavedBy
         <div
             key={id}
             onClick={async () => {
-                setIsSelected((prev) => !prev);
                 await onEditHandler(id);
+                setIsSelected((prev) => !prev);
             }}
             className="flex gap-4 cursor-pointer hover:bg-black/10 transition-all items-center"
         >

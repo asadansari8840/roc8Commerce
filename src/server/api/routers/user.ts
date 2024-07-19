@@ -1,9 +1,10 @@
-import {createTRPCRouter, publicProcedure} from '@/server/api/trpc';
+import {authProcedure, createTRPCRouter, publicProcedure} from '@/server/api/trpc';
 import {cookies} from 'next/headers';
 import {createUserSchema, loginUserSchema} from '@/lib/user-schema';
 import {hashPassword, verifyPassword, verifyRefreshToken} from '@/server/helpers/auth-helper';
 import {sendUser} from '@/server/helpers/send-user';
 import {TRPCError} from '@trpc/server';
+import {z} from 'zod';
 
 export const userRouter = createTRPCRouter({
     login: publicProcedure.input(loginUserSchema).mutation(async ({ctx, input}) => {
@@ -65,5 +66,28 @@ export const userRouter = createTRPCRouter({
         return {
             message: 'Logged out successfully',
         };
+    }),
+    verifyUser: authProcedure.input(z.object({otp: z.string().length(8)})).mutation(async ({ctx, input}) => {
+        const isValidUser = await ctx.db.user.findUnique({
+            where: {email: ctx.user.email},
+        });
+        if (!isValidUser) {
+            throw new TRPCError({code: 'NOT_FOUND', message: 'User not found'});
+        }
+        // not to be used in production !
+        if (input.otp == '00000000') {
+            await ctx.db.user.update({
+                where: {
+                    email: isValidUser.email,
+                },
+                data: {isVerified: true},
+            });
+            return sendUser(isValidUser, 'Verified successfully');
+        } else {
+            throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'Please enter a valid otp',
+            });
+        }
     }),
 });

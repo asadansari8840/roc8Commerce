@@ -30,7 +30,7 @@ const SignupForm = () => {
             await utils.user.invalidate();
             reset(defaultValue);
             toast.success('User created successfully');
-            router.push('/');
+            router.push('/verify');
         },
         onError: (error) => {
             toast.error(error.message ?? 'Something went wrong');

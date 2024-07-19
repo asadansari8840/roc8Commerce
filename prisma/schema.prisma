@@ -11,12 +11,12 @@ datasource db {
 }
 
 model User {
-    id           Int        @id @default(autoincrement())
-    name         String
-    email        String     @unique
-    password     String
-    refreshToken String?
-    interests    Int[]      // Array of category IDs
+    id         Int     @id @default(autoincrement())
+    name       String
+    email      String  @unique
+    password   String
+    isVerified Boolean @default(false)
+    interests  Int[] // Array of category IDs
 }
 
 model Category {
