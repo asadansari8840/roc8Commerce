@@ -1,29 +1,79 @@
-# Create T3 App
+# E-commerce Sign-Up and Login Flow
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Project Overview
 
-## What's next? How do I make an app with this?
+This project is a Next.js application that provides a simple sign-up and login flow for an e-commerce website with a protected page of categories. Users can register, log in, and view a list of categories in a paginated format. The application allows users to mark categories of interest, which are saved to the database and retained across sessions.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+**Deployed Application:** [https://roc8-commerce-ten.vercel.app/](https://roc8-commerce-ten.vercel.app/)
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+**GitHub Repository:** [https://github.com/asadansari8840/roc8Commerce.git](https://github.com/asadansari8840/roc8Commerce.git)
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Technology Stack
 
-## Learn More
+-   **Framework:** Next.js
+-   **Database:** PostgreSQL (using Prisma ORM)
+-   **CSS Framework:** Tailwind CSS
+-   **API Handling:** tRPC
+-   **Authentication:** JWT token based authentication
+-   **UI Design:** [Figma Design Link](https://www.figma.com/file/EjNZKDNTtgERV5PgF0mxnt/MERN-Assignment?type=design&node-Id=33:667&mode=design&t=6k9GiDcswPavMOTD-1)
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Project Setup
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+### Prerequisites
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+-   Node.js (v16 or later)
+-   PostgreSQL database
+-   `npm` or `yarn`
 
-## How do I deploy this?
+### Cloning the Repository
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- git clone https://github.com/asadansari8840/roc8Commerce.git
+- `cd roc8Commerce`
+
+### Installation
+
+- Install the dependencies:
+
+`npm install`
+# or
+`yarn install`
+
+### Database Setup
+
+- Setup Environment Variables
+
+Create a .env file in the root directory of your project with the following variables:
+
+env
+
+`DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE_NAME`
+##### Replace USER, PASSWORD, HOST, PORT, and DATABASE_NAME with your PostgreSQL credentials.
+
+### Generate Prisma Client
+
+`npm run postinstall`
+
+### Seed the Database
+
+- Generate 100 categories using the provided seed script:
+
+`npm run db:category:seed`
+
+- Migrate the Database
+Apply the latest migrations:
+
+`npm run db:migrate`
+
+### Running the Application Locally
+
+- Development Mode
+
+To start the development server: `npm run dev` The application will be available at http://localhost:3000.
+
+### Production Build
+
+- To build and start the application for production:
+
+`npm run build`
+`npm start`
+The application will be available at http://localhost:3000.
