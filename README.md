@@ -47,6 +47,13 @@ Create a .env file in the root directory of your project with the following vari
 env
 
 `DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE_NAME`
+`NODE_ENV = development`
+`ACCESS_TOKEN_JWT_SECRET=<your-secret>`
+`REFRESH_TOKEN_JWT_SECRET=<your-secret>` 
+`COOKIE_EXPIRE=<in-days-eg:5>`
+`JWT_REFRESH_TOKEN_EXPIRE=<in-days-eg:7d>`
+`JWT_ACCESS_TOKEN_EXPIRE=<in-days-eg:15min> //must be less than Refresh token`
+
 ##### Replace USER, PASSWORD, HOST, PORT, and DATABASE_NAME with your PostgreSQL credentials.
 
 ### Generate Prisma Client
