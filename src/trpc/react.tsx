@@ -1,7 +1,7 @@
 'use client';
 
 import {QueryClientProvider, type QueryClient} from '@tanstack/react-query';
-import {getFetch, httpBatchLink, loggerLink, unstable_httpBatchStreamLink} from '@trpc/client';
+import {getFetch, httpBatchLink, loggerLink} from '@trpc/client';
 import {createTRPCReact} from '@trpc/react-query';
 import {type inferRouterInputs, type inferRouterOutputs} from '@trpc/server';
 import {useState} from 'react';
@@ -29,7 +29,7 @@ export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export function TRPCReactProvider(props: {children: React.ReactNode}) {
     const queryClient = getQueryClient();
-    let token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : (temptoken ?? null);
+    const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : (temptoken ?? null);
 
     const [trpcClient] = useState(() =>
         api.createClient({

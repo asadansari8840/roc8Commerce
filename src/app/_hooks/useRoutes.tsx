@@ -13,7 +13,7 @@ export const useIsPublic = () => {
         if (!isLoading && isAuthenticated) {
             router.push('/');
         }
-    }, [isAuthenticated, isLoading]);
+    }, [isAuthenticated, isLoading, router]);
 };
 
 /**
@@ -31,5 +31,5 @@ export const useIsPrivate = () => {
         } else if (!isLoading && isAuthenticated && user?.isVerified) {
             router.push('/');
         }
-    }, [isAuthenticated, isLoading, user?.isVerified]);
+    }, [isAuthenticated, isLoading, user?.isVerified, router]);
 };

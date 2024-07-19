@@ -6,14 +6,14 @@ import OtpInput from '../OptInput';
 import {api} from '@/trpc/react';
 import {useRouter} from 'next/navigation';
 import toast from 'react-hot-toast';
-import {User} from '@/app/_context/AuthContext';
+import type {User} from '@/app/_context/AuthContext';
 import {useSession} from '@/app/_context/AuthProvider';
 
 const VerifyOtpForm = () => {
     const {setIsAuthenticated} = useSession();
     const router = useRouter();
     const [error, setError] = useState(false);
-    const {control, handleSubmit, setValue, getValues, reset} = useForm({
+    const {control, handleSubmit, setValue, reset} = useForm({
         defaultValues: {
             otp: [''],
         },

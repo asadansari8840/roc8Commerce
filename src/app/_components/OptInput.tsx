@@ -1,5 +1,6 @@
 import React, {useRef} from 'react';
-import {Controller, FieldValues, RegisterOptions, UseFormGetValues, UseFormSetValue, useForm} from 'react-hook-form';
+import {Controller} from 'react-hook-form';
+import type {RegisterOptions, FieldValues, UseFormSetValue} from 'react-hook-form';
 
 type InputProps = {
     label?: string;
@@ -7,13 +8,15 @@ type InputProps = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control?: any; // React Hook Form control object
     name: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setValue: UseFormSetValue<any>;
     otpLength?: number;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const OtpInput: React.FC<InputProps> = ({control, otpLength = 8, setValue, ...props}) => {
-    const [otpValues, setOtpValues] = React.useState(Array(otpLength).fill(''));
-    const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(8).fill(null));
+    const [otpValues, setOtpValues] = React.useState(Array<string>(otpLength).fill(''));
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const inputRefs = useRef<HTMLInputElement[]>(Array(8).fill(null));
 
     const onChange = (index: number, value: string) => {
         const newOtpValues = [...otpValues];
@@ -43,6 +46,7 @@ const OtpInput: React.FC<InputProps> = ({control, otpLength = 8, setValue, ...pr
 
     return (
         <div>
+            {/* // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
             {props.label && <p className="my-3 ml-2">{props.label}</p>}
             <div className="flex gap-2 items-center justify-center">
                 {otpValues.map((value, index) => (
@@ -50,14 +54,17 @@ const OtpInput: React.FC<InputProps> = ({control, otpLength = 8, setValue, ...pr
                         {...props}
                         key={index}
                         name={`otp[${index}]`}
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         control={control}
-                        defaultValue=""
                         render={({field, fieldState: {error}}) => (
                             <>
                                 <input
                                     {...field}
-                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                    ref={(el: any) => (inputRefs.current[index] = el)}
+                                    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+                                    ref={(el: any) => {
+                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return 
+                                        return (inputRefs.current[index] = el);
+                                    }}
                                     type="number"
                                     maxLength={1}
                                     value={value}
@@ -70,9 +77,7 @@ const OtpInput: React.FC<InputProps> = ({control, otpLength = 8, setValue, ...pr
                                     onKeyDown={(e) => handleKeyDown(index, e)}
                                     className="size-12 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
-                                {error?.root?.message && (
-                                    <p>{error.root.message}</p>
-                                )}
+                                {error?.root?.message && <p>{error.root.message}</p>}
                             </>
                         )}
                     />

@@ -16,9 +16,6 @@ interface CategoryListProps {
 const CategoryList: React.FC<CategoryListProps> = ({categories, refetch}) => {
     return (
         <div className="h-[350px] flex flex-col justify-evenly">
-            {categories.length == 0 && (
-                <p className='text-center text-red-500'>No categories found !</p>
-            )}
             {categories.map((category) => {
                 const {id, isSavedByUser, name} = category;
                 return (

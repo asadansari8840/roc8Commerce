@@ -1,8 +1,6 @@
 'use client';
 import React from 'react';
 import CONST from '../_constants/app-constants';
-import Link from 'next/link';
-import SignupForm from '../_components/forms/SignupForm';
 import VerifyOtpForm from '../_components/forms/VeirfyOtpForm';
 import {useSession} from '../_context/AuthProvider';
 import {useIsPrivate} from '../_hooks/useRoutes';

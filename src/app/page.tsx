@@ -16,7 +16,7 @@ export default function Home() {
     useIsPrivate();
 
     if (isLoading) {
-        return <div>Loading....</div>;
+        return <div>Loading.....</div>;
     }
 
     const totalPages = data?.totalPages ?? 1;

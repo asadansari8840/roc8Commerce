@@ -1,5 +1,4 @@
 import {authProcedure, createTRPCRouter} from '@/server/api/trpc';
-import {loginUserSchema} from '@/lib/user-schema';
 import {z} from 'zod';
 import {TRPCError} from '@trpc/server';
 

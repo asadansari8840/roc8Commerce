@@ -1,4 +1,4 @@
-import {ResponseCookie} from 'next/dist/compiled/@edge-runtime/cookies';
+import type {ResponseCookie} from 'next/dist/compiled/@edge-runtime/cookies';
 import {generateAccessToken, generateRefreshToken} from './auth-helper';
 import {cookies} from 'next/headers';
 
